@@ -11,10 +11,15 @@ const CalendarView = () => {
   const [value, setValue] = useState(new Date());
   const [exercises, setExercises] = useState([]);
   const [selectedLogs, setSelectedLogs] = useState([]);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    axios.get(API_URL).then(res => setExercises(res.data));
-  }, []);
+    axios.get(API_URL).then(res => {
+      // ★ 필터링: 내 기록만 캘린더에 저장
+      const myData = res.data.filter(item => item.username === user.username);
+      setExercises(myData);
+    });
+  }, [user.username]);
 
   const handleDateClick = (date) => {
     setValue(date);

@@ -1,14 +1,14 @@
-/* src/App.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
-/* --- [기존 스타일 유지] --- */
+/* 기본 설정 */
 body {
   background-color: #f0f2f5;
   font-family: 'Poppins', sans-serif, 'Malgun Gothic';
   color: #333;
 }
 
-.custom-card {
+/* 카드 스타일 */
+.custom-card, .auth-card {
   background: white;
   border-radius: 30px;
   border: none;
@@ -17,9 +17,9 @@ body {
   margin-bottom: 20px;
   transition: transform 0.2s;
 }
-
 .custom-card:hover { transform: translateY(-5px); }
 
+/* 네비게이션 바 */
 .navbar-custom {
   background: linear-gradient(135deg, #6c5ce7, #a29bfe);
   box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
@@ -29,6 +29,7 @@ body {
 }
 .navbar-brand, .nav-link { color: white !important; font-weight: 600; }
 
+/* 입력창 스타일 */
 .form-control-custom {
   background-color: #f1f3f6;
   border: none;
@@ -43,6 +44,7 @@ body {
   box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
 }
 
+/* 버튼 스타일 */
 .btn-custom {
   background: linear-gradient(135deg, #6c5ce7, #a29bfe);
   border: none;
@@ -59,13 +61,14 @@ body {
   filter: brightness(1.1);
 }
 
+/* 테이블 스타일 */
 .table-custom th {
   background-color: transparent;
   color: #888;
   font-size: 0.85rem;
   border: none;
   padding-bottom: 15px;
-  white-space: nowrap; /* 모바일에서 글자 줄바꿈 방지 */
+  white-space: nowrap;
 }
 .table-custom td {
   vertical-align: middle;
@@ -82,6 +85,7 @@ body {
   font-size: 0.8rem;
 }
 
+/* 아이콘 박스 */
 .icon-box {
   width: 60px; height: 60px; border-radius: 20px;
   display: flex; align-items: center; justify-content: center;
@@ -94,40 +98,20 @@ body {
 /* 캘린더 스타일 */
 .react-calendar { width: 100% !important; border: none !important; font-family: 'Poppins', sans-serif !important; background: transparent !important; }
 .react-calendar__month-view__weekdays { text-decoration: none !important; font-weight: bold; color: #a29bfe; font-size: 0.9rem; }
-.react-calendar__month-view__weekdays__weekday abbr { text-decoration: none !important; }
 .react-calendar__tile { padding: 15px 0 !important; border-radius: 15px !important; font-weight: 600; color: #555; }
 .react-calendar__tile--now { background: #edeef0 !important; color: #6c5ce7 !important; }
-.react-calendar__tile--active, .react-calendar__tile--active:enabled:hover { background: linear-gradient(135deg, #6c5ce7, #a29bfe) !important; color: white !important; box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3); }
+.react-calendar__tile--active { background: linear-gradient(135deg, #6c5ce7, #a29bfe) !important; color: white !important; }
 
-/* ★★★ [모바일 반응형 추가] ★★★ */
+/* ★★★ [모바일 최적화] ★★★ */
 @media (max-width: 768px) {
-  .container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+  .container { padding-left: 15px; padding-right: 15px; }
+  .custom-card, .auth-card { padding: 25px 20px !important; border-radius: 20px; margin-bottom: 15px; }
+  h2 { font-size: 1.5rem; } h3 { font-size: 1.3rem; }
+  .table-custom th, .table-custom td { padding: 12px 5px; font-size: 0.85rem; }
   
-  /* 카드가 모바일에서 꽉 차게 */
-  .custom-card {
-    padding: 20px; /* 패딩 줄임 */
-    border-radius: 20px;
-  }
+  /* 테이블 가로 스크롤 허용 */
+  .table-responsive { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   
-  /* 폰트 크기 조정 */
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.3rem; }
-  
-  /* 로그인/회원가입 카드 넓이 조정 */
-  .auth-card {
-    padding: 30px 20px !important;
-  }
-  
-  /* 테이블 스크롤 가능하게 */
-  .table-responsive {
-    overflow-x: auto;
-  }
-  
-  /* 입력창 글씨 크기 확보 (아이폰 줌인 방지) */
-  input, select, textarea {
-    font-size: 16px !important; 
-  }
+  /* 아이폰 입력창 확대 방지 */
+  input, select, textarea, .form-control-custom { font-size: 16px !important; }
 }

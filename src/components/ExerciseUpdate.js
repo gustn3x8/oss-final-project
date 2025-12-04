@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// ★ 본인의 MockAPI 주소 (exercises 리소스)
 const API_URL = 'https://692ae5787615a15ff24e076c.mockapi.io/exercises';
 
 const exerciseOptions = {
@@ -15,7 +14,6 @@ const exerciseOptions = {
   "유산소": ["러닝머신", "사이클", "버피", "천국의 계단"]
 };
 
-// 운동별 칼로리 기준표
 const CALORIES_DB = {
   "벤치프레스": { perSet: 15, perMin: 1 },
   "푸쉬업": { perSet: 5, perMin: 2 },
@@ -34,14 +32,26 @@ const CALORIES_DB = {
 const ExerciseUpdate = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  // 로그인 유저 정보 (보안상 체크 가능)
+  const user = JSON.parse(localStorage.getItem('user')); 
+
   const [form, setForm] = useState({
-    date: '', body_part: '', exercise_type: '', sets: 0, calories: 0, duration: 0
+    date: '', body_part: '', exercise_type: '', sets: 0, calories: 0, duration: 0, username: ''
   });
 
   useEffect(() => {
-    axios.get(`${API_URL}/${id}`).then(res => setForm(res.data));
-  }, [id]);
+    axios.get(`${API_URL}/${id}`).then(res => {
+      // 본인 글이 아니면 수정 못하게 튕겨내기 (선택사항)
+      if (res.data.username && res.data.username !== user.username) {
+        alert("본인의 글만 수정할 수 있습니다.");
+        navigate('/list');
+        return;
+      }
+      setForm(res.data);
+    });
+  }, [id, user.username, navigate]);
 
+  // 자동 계산 로직
   useEffect(() => {
     if (form.exercise_type) {
       const metric = CALORIES_DB[form.exercise_type] || { perSet: 5, perMin: 3 };
@@ -78,8 +88,7 @@ const ExerciseUpdate = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
-      {/* 모바일 대응 */}
+    <div className="d-flex justify-content-center">
       <div className="custom-card p-4 p-md-5" style={{ width: '100%', maxWidth: '600px' }}>
         <h3 className="fw-bold mb-4 text-center">Edit Workout ✏️</h3>
         
@@ -127,4 +136,5 @@ const ExerciseUpdate = () => {
     </div>
   );
 };
+
 export default ExerciseUpdate;

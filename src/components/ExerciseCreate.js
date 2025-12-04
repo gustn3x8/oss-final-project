@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-// ★ 본인의 MockAPI 주소 (exercises 리소스)
 const API_URL = 'https://692ae5787615a15ff24e076c.mockapi.io/exercises';
 
-// 운동 메뉴판
 const exerciseOptions = {
   "가슴": ["벤치프레스", "푸쉬업", "딥스", "인클라인 벤치프레스"],
   "등": ["데드리프트", "풀업", "랫 풀 다운", "바벨 로우"],
@@ -16,7 +14,6 @@ const exerciseOptions = {
   "유산소": ["러닝머신", "사이클", "버피", "천국의 계단"]
 };
 
-// 운동별 칼로리 기준표
 const CALORIES_DB = {
   "벤치프레스": { perSet: 15, perMin: 1 },
   "푸쉬업": { perSet: 5, perMin: 2 },
@@ -34,6 +31,9 @@ const CALORIES_DB = {
 
 const ExerciseCreate = () => {
   const navigate = useNavigate();
+  // 현재 로그인한 유저 정보 가져오기
+  const user = JSON.parse(localStorage.getItem('user'));
+
   const [form, setForm] = useState({
     date: new Date().toISOString().split('T')[0],
     body_part: '', 
@@ -43,7 +43,14 @@ const ExerciseCreate = () => {
     duration: 0
   });
 
-  // 자동 계산 로직
+  useEffect(() => {
+    // 로그인 안 했으면 튕겨내기
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      navigate('/login');
+    }
+  }, [user, navigate]);
+
   useEffect(() => {
     if (form.exercise_type) {
       const metric = CALORIES_DB[form.exercise_type] || { perSet: 5, perMin: 3 };
@@ -73,13 +80,14 @@ const ExerciseCreate = () => {
     try {
       const dataToSend = {
         ...form,
+        username: user.username, // ★ 핵심: 작성자 아이디(username)를 같이 저장!
         sets: Number(form.sets),
         calories: Number(form.calories),
         duration: Number(form.duration)
       };
       
       await axios.post(API_URL, dataToSend);
-      alert(`저장 완료! 🔥 (예상 소모: ${dataToSend.calories}kcal)`);
+      alert(`저장 완료! 🔥`);
       navigate('/list');
     } catch (error) {
       console.error(error);
@@ -88,38 +96,33 @@ const ExerciseCreate = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
-      {/* 모바일 대응: p-4(작은 패딩), max-width 설정 */}
+    <div className="d-flex justify-content-center">
       <div className="custom-card p-4 p-md-5" style={{ width: '100%', maxWidth: '600px' }}>
         <h3 className="fw-bold mb-2 text-center">New Workout 💪</h3>
         <p className="text-center text-muted mb-4">오늘의 운동을 기록해보세요.</p>
         
         <form onSubmit={handleSubmit}>
-          {/* 날짜 */}
           <div className="mb-4">
             <label className="fw-bold mb-2 ps-2 text-muted">Date</label>
             <input type="date" name="date" className="form-control-custom" value={form.date} onChange={handleChange} />
           </div>
 
-          {/* 부위 */}
           <div className="mb-4">
-            <label className="fw-bold mb-2 ps-2 text-muted">Body Part</label>
+            <label className="fw-bold mb-2 ps-2 text-muted">Part</label>
             <select name="body_part" className="form-control-custom" value={form.body_part} onChange={handleChange}>
               <option value="">Select Part</option>
               {Object.keys(exerciseOptions).map(part => <option key={part} value={part}>{part}</option>)}
             </select>
           </div>
 
-          {/* 종류 */}
           <div className="mb-4">
-            <label className="fw-bold mb-2 ps-2 text-muted">Exercise Name</label>
+            <label className="fw-bold mb-2 ps-2 text-muted">Exercise</label>
             <select name="exercise_type" className="form-control-custom" value={form.exercise_type} onChange={handleChange} disabled={!form.body_part}>
               <option value="">Select Exercise</option>
               {form.body_part && exerciseOptions[form.body_part].map(ex => <option key={ex} value={ex}>{ex}</option>)}
             </select>
           </div>
 
-          {/* 세트 & 시간 */}
           <div className="row mb-4">
             <div className="col-6">
               <label className="fw-bold mb-2 ps-2 text-muted">Sets</label>
@@ -131,7 +134,6 @@ const ExerciseCreate = () => {
             </div>
           </div>
 
-          {/* 칼로리 */}
           <div className="mb-4">
             <label className="fw-bold mb-2 ps-2 text-muted">Est. Calories (Auto)</label>
             <input type="number" name="calories" className="form-control-custom fw-bold text-primary" style={{ backgroundColor: '#e3f2fd' }} value={form.calories} readOnly />

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-// ★ 본인의 MockAPI 주소 (exercises 리소스)
 const API_URL = 'https://692ae5787615a15ff24e076c.mockapi.io/exercises';
 
 const ExerciseList = () => {
   const [exercises, setExercises] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem('user')); // 로그인 유저 정보
 
   useEffect(() => {
     fetchExercises();
@@ -16,18 +15,18 @@ const ExerciseList = () => {
   const fetchExercises = async () => {
     try {
       const response = await axios.get(API_URL);
-      // 날짜 내림차순 정렬 (최신순)
-      const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // ★ 핵심: 내 아이디(username)와 같은 기록만 남기기 + 날짜 내림차순 정렬
+      const myData = response.data.filter(item => item.username === user.username);
+      const sortedData = myData.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
       setExercises(sortedData);
-      setLoading(false);
     } catch (error) {
       console.error("로딩 실패:", error);
-      setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("정말 이 기록을 삭제하시겠습니까? 🗑️")) {
+    if (window.confirm("정말 삭제하시겠습니까? 🗑️")) {
       try {
         await axios.delete(`${API_URL}/${id}`);
         setExercises(exercises.filter(ex => ex.id !== id));
@@ -37,22 +36,16 @@ const ExerciseList = () => {
     }
   };
 
-  if (loading) return <div className="text-center mt-5">목록을 불러오는 중...</div>;
-
   return (
     <div className="container">
-      {/* 상단 헤더 영역 */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h3 className="fw-bold mb-0">My Workout Logs 📋</h3>
-          <p className="text-muted small mb-0">지금까지의 땀방울을 확인하세요.</p>
+          <p className="text-muted small mb-0">{user.name}님의 기록입니다.</p>
         </div>
-        <Link to="/create" className="btn-custom text-decoration-none shadow-sm">
-          + New Record
-        </Link>
+        <Link to="/create" className="btn-custom text-decoration-none shadow-sm">+ New</Link>
       </div>
 
-      {/* 테이블 카드 영역 */}
       <div className="custom-card">
         <div className="table-responsive">
           <table className="table table-custom table-hover">
@@ -71,35 +64,20 @@ const ExerciseList = () => {
                 exercises.map((exercise) => (
                   <tr key={exercise.id}>
                     <td className="text-muted">{exercise.date}</td>
-                    <td>
-                      <span className="badge-custom">{exercise.body_part}</span>
-                    </td>
+                    <td><span className="badge-custom">{exercise.body_part}</span></td>
                     <td className="fw-bold text-dark">{exercise.exercise_type}</td>
                     <td>{exercise.sets} set</td>
                     <td className="text-primary fw-bold">{exercise.calories} kcal</td>
                     <td>
-                      {/* 둥근 아이콘 버튼 스타일 */}
-                      <Link 
-                        to={`/update/${exercise.id}`} 
-                        className="btn btn-light btn-sm rounded-circle me-2 shadow-sm"
-                        title="수정"
-                      >
-                        ✏️
-                      </Link>
-                      <button 
-                        onClick={() => handleDelete(exercise.id)} 
-                        className="btn btn-light btn-sm rounded-circle text-danger shadow-sm"
-                        title="삭제"
-                      >
-                        🗑️
-                      </button>
+                      <Link to={`/update/${exercise.id}`} className="btn btn-light btn-sm rounded-circle me-2 shadow-sm">✏️</Link>
+                      <button onClick={() => handleDelete(exercise.id)} className="btn btn-light btn-sm rounded-circle text-danger shadow-sm">🗑️</button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan="6" className="text-center py-5">
-                    <p className="text-muted mb-0">아직 기록이 없습니다. 운동을 시작해보세요! 💪</p>
+                    <p className="text-muted mb-0">아직 기록이 없습니다. 💪</p>
                   </td>
                 </tr>
               )}
