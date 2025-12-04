@@ -115,3 +115,19 @@ body {
   /* 아이폰 입력창 확대 방지 */
   input, select, textarea, .form-control-custom { font-size: 16px !important; }
 }
+
+/* src/App.css 맨 아래에 추가 */
+
+/* --- [Date 입력창 튀어나감 방지] --- */
+input[type="date"].form-control-custom {
+  max-width: 100%;       /* 부모 크기를 넘지 않게 제한 */
+  box-sizing: border-box; /* 패딩을 포함해서 너비 계산 */
+  -webkit-appearance: none; /* 아이폰 기본 스타일 초기화 */
+  min-width: 0;          /* 플렉스박스 등에서 최소 너비 문제 방지 */
+}
+
+/* (선택사항) 아이폰에서 날짜 텍스트가 위로 쏠리는 현상 방지 */
+input[type="date"] {
+  display: block;
+  line-height: normal; /* 높이 정렬 */
+}
