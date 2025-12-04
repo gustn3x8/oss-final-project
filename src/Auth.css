@@ -1,0 +1,104 @@
+/* src/Auth.css */
+
+/* 전체 배경 */
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5; /* 아주 연한 회색 배경 */
+}
+
+/* 카드 디자인 */
+.auth-card {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 30px; /* 둥근 모서리 */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+  text-align: center;
+}
+
+/* 제목 스타일 */
+.auth-title {
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+.auth-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+/* 입력창 그룹 */
+.input-group-custom {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* 아이콘 위치 잡기 */
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  color: #a0a0a0;
+  font-size: 1.1rem;
+}
+
+/* 입력창 디자인 (부트스트랩 덮어쓰기) */
+.form-control-custom {
+  width: 100%;
+  padding: 15px 15px 15px 50px; /* 아이콘 공간만큼 왼쪽 패딩 */
+  border-radius: 30px; /* 알약 모양 */
+  border: none;
+  background-color: #f1f3f6; /* 연한 회색 배경 */
+  color: #333;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+  outline: none;
+  background-color: #e8eaf6;
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2); /* 포커스 시 보라색 빛 */
+}
+
+/* 로그인 버튼 */
+.btn-auth {
+  width: 100%;
+  padding: 15px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe); /* 보라색 그라데이션 */
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 10px;
+  box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+  transition: transform 0.2s;
+}
+
+.btn-auth:hover {
+  transform: translateY(-2px); /* 살짝 떠오르는 효과 */
+  background: linear-gradient(135deg, #5b4cc4, #8e84e6);
+}
+
+/* 하단 링크 */
+.auth-footer {
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.auth-link {
+  color: #6c5ce7;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 5px;
+}
