@@ -54,7 +54,7 @@ const CalendarView = () => {
         {/* 달력 영역 */}
         <div className="col-md-6 mb-4">
           <div className="custom-card h-100 p-4">
-            <h3 className="fw-bold mb-4" style={{ color: '#333' }}>Calendar 📅</h3>
+            <h3 className="fw-bold mb-4" style={{ color: '#333' }}>Calendar </h3>
             <Calendar 
               onChange={setValue} 
               value={value} 

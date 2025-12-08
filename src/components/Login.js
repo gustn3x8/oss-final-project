@@ -26,7 +26,7 @@ const Login = ({ setIsLoggedIn }) => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light px-3">
       <div className="custom-card p-4 p-md-5 shadow" style={{ width: '100%', maxWidth: '400px' }}>
-        <h2 className="text-center mb-2 fw-bold" style={{color:'#333'}}>Welcome Back! 👋</h2>
+        <h2 className="text-center mb-2 fw-bold" style={{color:'#333'}}>Welcome to FitLog!</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-3"><input type="text" name="username" className="form-control-custom" placeholder="ID" onChange={e => setFormData({...formData, username: e.target.value})} /></div>
           <div className="mb-4"><input type="password" name="password" className="form-control-custom" placeholder="Password" onChange={e => setFormData({...formData, password: e.target.value})} /></div>
