@@ -42,7 +42,6 @@ const ExerciseUpdate = () => {
     date: '', body_part: '', exercise_type: '', sets: 0, calories: 0, duration: 0, username: ''
   });
 
-  // 1. 데이터 불러오기
   useEffect(() => {
     axios.get(`${API_URL}/${id}`).then(res => {
       if (res.data.username && user && res.data.username !== user.username) {
@@ -54,7 +53,6 @@ const ExerciseUpdate = () => {
     });
   }, [id, user, navigate]);
 
-  // 2. 칼로리 계산 함수 (Create 페이지와 동일한 로직)
   const calculateCalories = (type, sets, duration) => {
     if (type && CALORIES_DB[type]) {
       const metric = CALORIES_DB[type];
@@ -63,15 +61,12 @@ const ExerciseUpdate = () => {
     return 0; 
   };
 
-  // 3. 입력 핸들러 (입력하는 순간 즉시 계산!)
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // (1) 부위 변경 시 -> 다른 값들 초기화
     if (name === 'body_part') {
       setForm({ ...form, body_part: value, exercise_type: '', sets: 0, duration: 0, calories: 0 });
     } 
-    // (2) 그 외 변경 시 -> 값 업데이트 + 칼로리 재계산
     else {
       const nextForm = { ...form, [name]: value };
 
@@ -106,7 +101,6 @@ const ExerciseUpdate = () => {
     }
   };
 
-  // 자동 계산 지원 여부 (직접 입력 활성화용)
   const isAutoCalc = CALORIES_DB[form.exercise_type] !== undefined;
 
   return (

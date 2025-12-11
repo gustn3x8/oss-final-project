@@ -6,7 +6,7 @@ const API_URL = 'https://692ae5787615a15ff24e076c.mockapi.io/exercises';
 
 const ExerciseList = () => {
   const [exercises, setExercises] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user')); // 로그인 유저 정보
+  const user = JSON.parse(localStorage.getItem('user')); 
 
   useEffect(() => {
     fetchExercises();
@@ -15,7 +15,6 @@ const ExerciseList = () => {
   const fetchExercises = async () => {
     try {
       const response = await axios.get(API_URL);
-      // ★ 핵심: 내 아이디(username)와 같은 기록만 남기기 + 날짜 내림차순 정렬
       const myData = response.data.filter(item => item.username === user.username);
       const sortedData = myData.sort((a, b) => new Date(b.date) - new Date(a.date));
       

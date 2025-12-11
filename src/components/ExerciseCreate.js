@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const API_URL = 'https://692ae5787615a15ff24e076c.mockapi.io/exercises';
 
-// 운동 목록
 const exerciseOptions = {
   "가슴": ["벤치프레스", "푸쉬업", "딥스", "인클라인 벤치프레스"],
   "등": ["데드리프트", "풀업", "랫 풀 다운", "바벨 로우"],
@@ -65,7 +64,6 @@ const ExerciseCreate = () => {
   const location = useLocation(); 
   const user = JSON.parse(localStorage.getItem('user'));
 
-  // 초기값 설정
   const [form, setForm] = useState(() => {
     const initialState = {
       date: new Date().toISOString().split('T')[0],
@@ -93,7 +91,6 @@ const ExerciseCreate = () => {
     if (!user) { alert("로그인이 필요합니다."); navigate('/login'); }
   }, [user, navigate]);
 
-  // 칼로리 계산 함수
   const calculateCalories = (type, sets, duration) => {
     if (type && CALORIES_DB[type]) {
       const metric = CALORIES_DB[type];
@@ -102,7 +99,6 @@ const ExerciseCreate = () => {
     return 0;
   };
 
-  // 입력 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     

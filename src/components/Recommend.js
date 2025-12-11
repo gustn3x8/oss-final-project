@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// 정적 데이터 (백과사전)
 const guideData = [
   { id: 1, name: "벤치프레스", part: "가슴", desc: "가슴 근육 발달에 최고의 운동입니다.", tips: "허리를 아치형으로 만들고 견갑골을 고정하세요." },
   { id: 2, name: "스쿼트", part: "하체", desc: "하체 근력과 전신 균형을 잡아줍니다.", tips: "무릎이 발끝보다 많이 나가지 않도록 주의하세요." },
@@ -24,7 +23,6 @@ const Recommend = () => {
         <p className="text-muted">운동 방법을 검색하고 꿀팁을 확인하세요.</p>
       </div>
 
-      {/* 검색창 */}
       <div className="d-flex justify-content-center mb-5">
         <div style={{ width: '100%', maxWidth: '500px' }}>
           <input 
@@ -36,7 +34,6 @@ const Recommend = () => {
         </div>
       </div>
 
-      {/* 카드 리스트 */}
       <div className="row">
         {filtered.map(item => (
           <div className="col-md-6 col-lg-4 mb-4" key={item.id}>

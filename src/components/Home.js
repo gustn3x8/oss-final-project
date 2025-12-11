@@ -13,7 +13,6 @@ const Home = () => {
   useEffect(() => {
     axios.get(API_URL).then(res => {
       const data = res.data;
-      // ★ 필터링: 내 아이디와 일치하는 데이터만!
       const myData = data.filter(item => item.username === user.username);
 
       setStats({
@@ -21,7 +20,6 @@ const Home = () => {
         calories: myData.reduce((acc, cur) => acc + Number(cur.calories), 0),
         duration: myData.reduce((acc, cur) => acc + Number(cur.duration), 0)
       });
-      // 내 기록 중에서 최신 5개
       setRecentLogs(myData.slice(-5).reverse());
     });
   }, [user.username]);
